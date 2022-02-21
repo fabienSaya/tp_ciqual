@@ -21,12 +21,12 @@
         <!-- Permet à Hibernate de créer les tables depuis les entités -->
         <property name = "hbm2ddl.auto"> update </property>
         <!-- Charger les entités -->
-        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.Group" />
-        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.SubGroup" />
-        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.SubSubGroup" />
-        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.ScientificName" />
-        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.ComponentType" />
-        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.AlimentComponent" />
-        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.Aliment" />
+        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.FoodGroup" />
+        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.FoodSubGroup" />
+        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.FoodSubSubGroup" />
+        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.FoodScientificName" />
+        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.FoodComponentType" />
+        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.FoodComponent" />
+        <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.Food" />
     </session-factory>
 </hibernate-configuration>

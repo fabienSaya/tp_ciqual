@@ -3,16 +3,16 @@ package com.bnp.lafabrique.epita.ciqual.domaine;
 import javax.persistence.*;
 
 @Entity
-public class AlimentComponent {
+public class FoodComponent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String name;
+
 
     @ManyToOne
-    //private ComponentType componentType;
+    private FoodComponentType componentType;
 
     private long quantity;
 
@@ -23,14 +23,11 @@ public class AlimentComponent {
      */
     private String comparator;
 
-    public AlimentComponent() {
+    public FoodComponent() {
     }
 
-
-    //public AlimentComponent(String name, ComponentType componentType, long quantity, String comparator) {
-    public AlimentComponent(String name, long quantity, String comparator) {
-        this.name = name;
-        //this.componentType = componentType;
+    public FoodComponent(FoodComponentType componentType, long quantity, String comparator) {
+        this.componentType = componentType;
         this.quantity = quantity;
         this.comparator = comparator;
     }
@@ -42,15 +39,6 @@ public class AlimentComponent {
     public void setId(long id) {
         this.id = id;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 
 
     public long getQuantity() {
@@ -67,5 +55,13 @@ public class AlimentComponent {
 
     public void setComparator(String comparator) {
         this.comparator = comparator;
+    }
+
+    public FoodComponentType getComponentType() {
+        return componentType;
+    }
+
+    public void setComponentType(FoodComponentType componentType) {
+        this.componentType = componentType;
     }
 }

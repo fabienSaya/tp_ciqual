@@ -2,13 +2,13 @@ package com.bnp.lafabrique.epita.ciqual.dto;
 
 import com.bnp.lafabrique.epita.ciqual.dto.enumerate.EnumComparator;
 
-public class AlimentComponentDto {
+public class FoodComponentDto {
 
     private long id;
 
-    private String name;
 
-    private ComponentTypeDto componentType;
+
+    private FoodComponentTypeDto componentType;
 
     private long quantity;
 
@@ -19,11 +19,10 @@ public class AlimentComponentDto {
      */
     private EnumComparator comparator;
 
-    public AlimentComponentDto() {
+    public FoodComponentDto() {
     }
 
-    public AlimentComponentDto(String name, ComponentTypeDto componentType, long quantity, EnumComparator comparator) {
-        this.name = name;
+    public FoodComponentDto(FoodComponentTypeDto componentType, long quantity, EnumComparator comparator) {
         this.componentType = componentType;
         this.quantity = quantity;
         this.comparator = comparator;
@@ -37,15 +36,6 @@ public class AlimentComponentDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
 
     public long getQuantity() {
         return quantity;
@@ -56,7 +46,6 @@ public class AlimentComponentDto {
     }
 
 
-
     public EnumComparator getComparator() {
         return comparator;
     }
@@ -65,11 +54,11 @@ public class AlimentComponentDto {
         this.comparator = comparator;
     }
 
-    public ComponentTypeDto getComponentType() {
+    public FoodComponentTypeDto getComponentType() {
         return componentType;
     }
 
-    public void setComponentType(ComponentTypeDto componentType) {
+    public void setComponentType(FoodComponentTypeDto componentType) {
         this.componentType = componentType;
     }
 
@@ -77,7 +66,6 @@ public class AlimentComponentDto {
     public String toString() {
         return "AlimentComponentDto{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", componentType=" + componentType +
                 ", quantity=" + quantity +
                 ", comparator=" + comparator +

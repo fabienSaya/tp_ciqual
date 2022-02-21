@@ -7,8 +7,12 @@ public class DaoFactory {
 
     private static SessionFactory sessionFactory;
 
-    public static AlimentDao getProduitDao() {
-        return new AlimentDaoImpl();
+    public static FoodDao getProduitDao() {
+        return new FoodDaoImpl();
+    }
+
+    public static FoodComponentTypeDao getComponentTypeDao() {
+        return new FoodComponentTypeDaoImpl();
     }
 
     public static SessionFactory getSessionFactory() {

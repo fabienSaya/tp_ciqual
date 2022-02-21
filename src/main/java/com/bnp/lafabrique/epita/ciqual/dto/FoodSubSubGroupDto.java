@@ -1,23 +1,21 @@
 package com.bnp.lafabrique.epita.ciqual.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
-public class GroupDto {
-
+public class FoodSubSubGroupDto {
     private long id;
+
+    private FoodSubGroupDto subGroup;
 
     private String code;
     //we could think of a way to store labels with different langage without changing the DB model.
     //but here I simplify. This could be an improvement for all class with labels
     private String nameFR;
 
-    public GroupDto() {
+    public FoodSubSubGroupDto() {
     }
 
-    public GroupDto(String code, String nameFR) {
+    public FoodSubSubGroupDto(FoodSubGroupDto group, String code, String nameFR) {
+        this.subGroup = group;
         this.code = code;
         this.nameFR = nameFR;
     }
@@ -28,6 +26,14 @@ public class GroupDto {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public FoodSubGroupDto getSubGroup() {
+        return subGroup;
+    }
+
+    public void setSubGroup(FoodSubGroupDto group) {
+        this.subGroup = group;
     }
 
     public String getCode() {
@@ -48,8 +54,9 @@ public class GroupDto {
 
     @Override
     public String toString() {
-        return "GroupDto{" +
+        return "SubSubGroupDto{" +
                 "id=" + id +
+                ", subGroup=" + subGroup +
                 ", code='" + code + '\'' +
                 ", nameFR='" + nameFR + '\'' +
                 '}';

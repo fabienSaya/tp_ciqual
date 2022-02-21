@@ -1,24 +1,23 @@
 package com.bnp.lafabrique.epita.ciqual.dto;
 
-import javax.persistence.*;
 import java.util.List;
 
-public class AlimentDto {
+public class FoodDto {
     private long id;
 
     private String code;
     private String name;
 
-    private ScientificNameDto scientificName;
+    private FoodScientificNameDto scientificName;
 
-    private SubSubGroupDto subSubGroup;
+    private FoodSubSubGroupDto subSubGroup;
 
-    private List<AlimentComponentDto> componentList;
+    private List<FoodComponentDto> componentList;
 
-    public AlimentDto() {
+    public FoodDto() {
     }
 
-    public AlimentDto(String code, String name, ScientificNameDto scientificName, SubSubGroupDto subSubGroup, List<AlimentComponentDto> componentList) {
+    public FoodDto(String code, String name, FoodScientificNameDto scientificName, FoodSubSubGroupDto subSubGroup, List<FoodComponentDto> componentList) {
         this.code = code;
         this.name = name;
         this.scientificName = scientificName;
@@ -50,27 +49,27 @@ public class AlimentDto {
         this.name = name;
     }
 
-    public ScientificNameDto getScientificName() {
+    public FoodScientificNameDto getScientificName() {
         return scientificName;
     }
 
-    public void setScientificName(ScientificNameDto scientificName) {
+    public void setScientificName(FoodScientificNameDto scientificName) {
         this.scientificName = scientificName;
     }
 
-    public SubSubGroupDto getSubSubGroup() {
+    public FoodSubSubGroupDto getSubSubGroup() {
         return subSubGroup;
     }
 
-    public void setSubSubGroup(SubSubGroupDto subSubGroup) {
+    public void setSubSubGroup(FoodSubSubGroupDto subSubGroup) {
         this.subSubGroup = subSubGroup;
     }
 
-    public List<AlimentComponentDto> getComponentList() {
+    public List<FoodComponentDto> getComponentList() {
         return componentList;
     }
 
-    public void setComponentList(List<AlimentComponentDto> componentList) {
+    public void setComponentList(List<FoodComponentDto> componentList) {
         this.componentList = componentList;
     }
 

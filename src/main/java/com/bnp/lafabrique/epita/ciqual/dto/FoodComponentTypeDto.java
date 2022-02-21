@@ -1,16 +1,17 @@
 package com.bnp.lafabrique.epita.ciqual.dto;
 
-public class ComponentTypeDto {
+public class FoodComponentTypeDto {
     private long id;
 
     private String name;
+    private String label;
 
-    public ComponentTypeDto(long id, String name) {
-        this.id = id;
+    public FoodComponentTypeDto(String name, String label) {
         this.name = name;
+        this.label = label;
     }
 
-    public ComponentTypeDto() {
+    public FoodComponentTypeDto() {
     }
 
     public long getId() {
@@ -27,5 +28,13 @@ public class ComponentTypeDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

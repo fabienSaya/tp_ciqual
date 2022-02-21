@@ -1,19 +1,22 @@
-package com.bnp.lafabrique.epita.ciqual.dto;
+package com.bnp.lafabrique.epita.ciqual.domaine;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-public class ScientificNameDto {
+@Entity
+public class FoodScientificName {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;
 
-    public ScientificNameDto() {
+    public FoodScientificName() {
     }
 
-    public ScientificNameDto(String name) {
+    public FoodScientificName(String name) {
         this.name = name;
     }
 
@@ -31,13 +34,5 @@ public class ScientificNameDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "ScientificNameDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
     }
 }

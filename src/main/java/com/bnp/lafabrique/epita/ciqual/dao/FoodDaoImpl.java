@@ -1,14 +1,14 @@
 package com.bnp.lafabrique.epita.ciqual.dao;
 
-import com.bnp.lafabrique.epita.ciqual.domaine.Aliment;
+import com.bnp.lafabrique.epita.ciqual.domaine.Food;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 
-public class AlimentDaoImpl implements AlimentDao{
+public class FoodDaoImpl implements FoodDao {
 
     @Override
-    public Long create(Aliment aliment) {
+    public Long create(Food aliment) {
         SessionFactory sessionFactory=DaoFactory.getSessionFactory();
 
         Session session=sessionFactory.openSession();

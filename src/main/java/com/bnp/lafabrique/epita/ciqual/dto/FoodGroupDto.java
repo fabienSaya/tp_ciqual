@@ -1,27 +1,18 @@
 package com.bnp.lafabrique.epita.ciqual.dto;
 
-import javax.persistence.*;
+public class FoodGroupDto {
 
-
-/**
- * we could put group, subgroup, subsubgroup in only one table.
- * I chose to create different ones
- */
-public class SubGroupDto {
     private long id;
-
-    private GroupDto group;
 
     private String code;
     //we could think of a way to store labels with different langage without changing the DB model.
     //but here I simplify. This could be an improvement for all class with labels
     private String nameFR;
 
-    public SubGroupDto() {
+    public FoodGroupDto() {
     }
 
-    public SubGroupDto(GroupDto group, String code, String nameFR) {
-        this.group = group;
+    public FoodGroupDto(String code, String nameFR) {
         this.code = code;
         this.nameFR = nameFR;
     }
@@ -32,14 +23,6 @@ public class SubGroupDto {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public GroupDto getGroup() {
-        return group;
-    }
-
-    public void setGroup(GroupDto group) {
-        this.group = group;
     }
 
     public String getCode() {
@@ -60,9 +43,8 @@ public class SubGroupDto {
 
     @Override
     public String toString() {
-        return "SubGroupDto{" +
+        return "GroupDto{" +
                 "id=" + id +
-                ", group=" + group +
                 ", code='" + code + '\'' +
                 ", nameFR='" + nameFR + '\'' +
                 '}';

@@ -1,26 +1,31 @@
 package com.bnp.lafabrique.epita.ciqual.domaine;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+
+/**
+ * we could put group, subgroup, subsubgroup in only one table.
+ * I chose to create different ones
+ */
 @Entity
-public class Group {
-
+public class FoodSubSubGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @ManyToOne
+    private FoodSubGroup alimentSubGroup;
 
     private String code;
     //we could think of a way to store labels with different langage without changing the DB model.
     //but here I simplify. This could be an improvement for all class with labels
     private String nameFR;
 
-    public Group() {
+    public FoodSubSubGroup() {
     }
 
-    public Group(String code, String nameFR) {
+    public FoodSubSubGroup(FoodSubGroup alimentSubGroup, String code, String nameFR) {
+        this.alimentSubGroup = alimentSubGroup;
         this.code = code;
         this.nameFR = nameFR;
     }
@@ -31,6 +36,14 @@ public class Group {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public FoodSubGroup getSubGroup() {
+        return alimentSubGroup;
+    }
+
+    public void setSubGroup(FoodSubGroup alimentSubGroup) {
+        this.alimentSubGroup = alimentSubGroup;
     }
 
     public String getCode() {

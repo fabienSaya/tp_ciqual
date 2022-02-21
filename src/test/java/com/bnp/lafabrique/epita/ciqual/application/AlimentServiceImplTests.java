@@ -1,6 +1,6 @@
 package com.bnp.lafabrique.epita.ciqual.application;
 
-import com.bnp.lafabrique.epita.ciqual.dto.AlimentDto;
+import com.bnp.lafabrique.epita.ciqual.dto.FoodDto;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
@@ -17,9 +17,9 @@ public class AlimentServiceImplTests {
         try {
             String path="C:\\LaFabrique\\Exercices\\Java\\epita\\TP_VACANCE_FEV\\ciqual\\src\\main\\resources\\Table Ciqual 2020_FR_2020 07 07.csv";
 
-            List<AlimentDto> aliments= csvFileCiqualService.loadFile(path);
+            List<FoodDto> aliments= csvFileCiqualService.loadFile(path);
 
-            AlimentDto alimentDto=aliments.get(2);
+            FoodDto alimentDto=aliments.get(2);
 
             System.out.println(aliments.get(2));
 
