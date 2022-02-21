@@ -20,6 +20,6 @@ public class ComponentTypeServiceImpl implements ComponentTypeService{
     }
 
     private FoodComponentType convertComponentTypeDtoToComponentType(FoodComponentTypeDto alimentComponentTypeDto){
-        return new FoodComponentType(alimentComponentTypeDto.getName(), alimentComponentTypeDto.getName());
+        return new FoodComponentType(alimentComponentTypeDto.getName(), alimentComponentTypeDto.getLabel());
     }
 }

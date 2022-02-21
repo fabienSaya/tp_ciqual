@@ -36,7 +36,7 @@ public class FoodComponentTypeDaoImpl implements FoodComponentTypeDao {
         SessionFactory sessionFactory = DaoFactory.getSessionFactory();
         Session session = sessionFactory.openSession();
         try {
-            Query query = session.createQuery("select p from Produit p");
+            Query query = session.createQuery("select c from FoodComponentType c");
             return query.getResultList();
         } finally {
             session.close();
@@ -49,7 +49,7 @@ public class FoodComponentTypeDaoImpl implements FoodComponentTypeDao {
         Session session = sessionFactory.openSession();
         List<FoodComponentType> list;
         try {
-            Query query = session.createQuery("select c from ComponentType p where p.name like :name");
+            Query query = session.createQuery("select c from FoodComponentType c where c.name like :name");
             query.setParameter("name",name+"%");
             list=query.getResultList();
         } finally {
