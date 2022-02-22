@@ -34,7 +34,9 @@ public class FoodServiceImpl implements FoodService {
         FoodSubGroup foodSubGroup = new FoodSubGroup(foodGroup, subGroupDto.getCode(), subGroupDto.getNameFR());
         FoodSubSubGroup foodSubSubGroup = new FoodSubSubGroup(foodSubGroup,subSubGroupDto.getCode(), subSubGroupDto.getNameFR());
 
-        List<FoodComponent> foodComponentList= foodDto.getComponentList().stream().map(this::convertFoodComponentDtoToFoodComponent).collect(Collectors.toList());
+        List<FoodComponent> foodComponentList=null;
+        if (foodDto.getComponentList()!=null)
+            foodComponentList= foodDto.getComponentList().stream().map(this::convertFoodComponentDtoToFoodComponent).collect(Collectors.toList());
 
         return new Food(foodDto.getCode(), foodDto.getName(), foodScientificName, foodSubSubGroup,foodComponentList);
 

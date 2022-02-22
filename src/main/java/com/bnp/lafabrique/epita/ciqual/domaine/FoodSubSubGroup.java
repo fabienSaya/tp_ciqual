@@ -13,7 +13,7 @@ public class FoodSubSubGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private FoodSubGroup alimentSubGroup;
 
     private String code;

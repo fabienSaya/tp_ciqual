@@ -12,13 +12,13 @@ public class Food {
     private String code;
     private String name;
 
-    @OneToOne
+    @OneToOne (cascade = CascadeType.ALL)
     private FoodScientificName alimentScientificName;
 
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.ALL)
     private FoodSubSubGroup alimentSubSubGroup;
 
-    @OneToMany
+    @OneToMany (cascade = CascadeType.ALL)
     private List<FoodComponent> componentList;
 
     public Food() {
