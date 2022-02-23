@@ -4,12 +4,9 @@ import javax.persistence.*;
 
 @Entity
 public class FoodComponent {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-
 
     @ManyToOne
     private FoodComponentType componentType;

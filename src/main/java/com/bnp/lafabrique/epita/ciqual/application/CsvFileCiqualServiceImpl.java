@@ -1,6 +1,7 @@
 package com.bnp.lafabrique.epita.ciqual.application;
 
 import com.bnp.lafabrique.epita.ciqual.dto.*;
+import com.bnp.lafabrique.epita.ciqual.exception.GroupDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +29,15 @@ public class CsvFileCiqualServiceImpl implements CsvFileCiqualService {
 
     @Override
     public int loadFileAndInsertIntoDatabase(String path) throws IOException {
+        //note: il y avait un soucis de doublons dans le csv source. Le produit 9621 apparait 2 fois. j'ai changé un des codes.
+        //sinon ca oblige à cause d'une produit à autoriser un meme code, different categorie. Bref changer toute la structure pour ce qui
+        //ressemble à un prob de consolidation. Pont à discuter mais ca me semble pas l'objet du TP
+
         List<FoodDto> foodDtoList = loadFile(path);
 
         //insert objects into DB using the food service
-        foodDtoList.stream().limit(2).forEach(foodService::create);
+        //foodDtoList.stream().limit(2).forEach(foodService::create);
+        foodDtoList.forEach(foodService::create);
 
         return foodDtoList.size();
     }

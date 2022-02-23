@@ -8,7 +8,7 @@ import org.hibernate.SessionFactory;
 public class FoodDaoImpl implements FoodDao {
 
     @Override
-    public Long create(Food food) {
+    public Food create(Food food) {
         SessionFactory sessionFactory=DaoFactory.getSessionFactory();
 
         Session session=sessionFactory.openSession();
@@ -18,6 +18,21 @@ public class FoodDaoImpl implements FoodDao {
         session.getTransaction().commit();
         session.close();
 
-        return food.getId();
+        return food;
+    }
+
+    @Override
+    public Food findFoodByCode(String foodCode) {
+        SessionFactory sessionFactory=DaoFactory.getSessionFactory();
+
+        Session session=sessionFactory.openSession();
+        session.beginTransaction();
+        Food food=session.bySimpleNaturalId(Food.class).load(foodCode);
+
+        session.getTransaction().commit();
+        session.close();
+
+        return food;
+
     }
 }

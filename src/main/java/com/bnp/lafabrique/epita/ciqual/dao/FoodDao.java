@@ -8,5 +8,7 @@ public interface FoodDao {
      * @param aliment
      * @return id of the created aliment
      */
-    Long create(Food aliment);
+    Food create(Food aliment);
+
+    Food findFoodByCode(String foodCode);
 }

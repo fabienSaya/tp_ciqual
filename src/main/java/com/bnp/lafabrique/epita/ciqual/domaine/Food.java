@@ -1,5 +1,7 @@
 package com.bnp.lafabrique.epita.ciqual.domaine;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -9,6 +11,8 @@ public class Food {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NaturalId
+    @Column(nullable = false,unique = true)
     private String code;
     private String name;
 

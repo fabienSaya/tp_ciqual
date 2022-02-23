@@ -1,9 +1,8 @@
 package com.bnp.lafabrique.epita.ciqual.domaine;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.hibernate.annotations.NaturalId;
+
+import javax.persistence.*;
 
 @Entity
 public class FoodGroup {
@@ -12,6 +11,8 @@ public class FoodGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NaturalId
+    @Column(nullable = false,unique = true)
     private String code;
     //we could think of a way to store labels with different langage without changing the DB model.
     //but here I simplify. This could be an improvement for all class with labels

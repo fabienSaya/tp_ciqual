@@ -1,6 +1,7 @@
 package com.bnp.lafabrique.epita.ciqual.application;
 
 import com.bnp.lafabrique.epita.ciqual.dto.FoodDto;
+import com.bnp.lafabrique.epita.ciqual.exception.GroupDefinitionException;
 
 import java.io.IOException;
 import java.util.List;

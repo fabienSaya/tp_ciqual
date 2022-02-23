@@ -1,5 +1,7 @@
 package com.bnp.lafabrique.epita.ciqual.domaine;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 
 
@@ -16,7 +18,9 @@ public class FoodSubGroup {
     @ManyToOne  (cascade = CascadeType.ALL)
     private FoodGroup alimentGroup;
 
-    private String code;
+
+    private String code;//note: we can have 2 subgroup with same code
+
     //we could think of a way to store labels with different langage without changing the DB model.
     //but here I simplify. This could be an improvement for all class with labels
     private String nameFR;
