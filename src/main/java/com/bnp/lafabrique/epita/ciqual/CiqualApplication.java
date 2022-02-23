@@ -25,16 +25,8 @@ public class CiqualApplication {
 
 
 	public static void main(String[] args) {
-		//initDB();
-		//SpringApplication.run(CiqualApplication.class, args);
-
-		String tit="1";
-
-		int i=Integer.parseInt(tit);
-		int j=5;
-
-		System.out.println(i+" "+j);
-
+		initDB();
+		SpringApplication.run(CiqualApplication.class, args);
 
 	}
 

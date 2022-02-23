@@ -12,7 +12,7 @@ public class Food {
     private String code;
     private String name;
 
-    @OneToOne (cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private FoodScientificName alimentScientificName;
 
     @ManyToOne (cascade = CascadeType.ALL)

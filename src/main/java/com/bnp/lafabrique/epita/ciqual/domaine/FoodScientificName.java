@@ -1,9 +1,9 @@
 package com.bnp.lafabrique.epita.ciqual.domaine;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.hibernate.annotations.NaturalId;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class FoodScientificName {
@@ -11,6 +11,8 @@ public class FoodScientificName {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NaturalId
+    @Column(nullable = false,unique = true)
     private String name;
 
     public FoodScientificName() {
@@ -34,5 +36,18 @@ public class FoodScientificName {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FoodScientificName that = (FoodScientificName) o;
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
