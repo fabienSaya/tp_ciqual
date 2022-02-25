@@ -8,6 +8,7 @@ public class FoodComponentDto {
 
     private FoodComponentTypeDto componentType;
 
+    //object double as quantity can be null
     private Double quantity;
 
     /* comparator on the quantity:
@@ -24,6 +25,11 @@ public class FoodComponentDto {
         this.componentType = componentType;
         this.quantity = quantity;
         this.comparator = comparator;
+    }
+
+    public FoodComponentDto(FoodComponentTypeDto componentType, Double quantity, EnumComparator comparator,long id) {
+        this(componentType,quantity,comparator);
+        this.id=id;
     }
 
     public long getId() {

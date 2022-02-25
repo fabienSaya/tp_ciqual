@@ -14,6 +14,11 @@ public class FoodComponentTypeDto {
         this.excelColumn= excelColumn;
     }
 
+    public FoodComponentTypeDto(String name, String label, int excelColumn,long id) {
+        this(name,label,excelColumn);
+        this.id=id;
+    }
+
     public FoodComponentTypeDto() {
     }
 

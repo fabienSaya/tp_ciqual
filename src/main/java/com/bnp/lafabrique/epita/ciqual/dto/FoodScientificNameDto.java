@@ -1,5 +1,6 @@
 package com.bnp.lafabrique.epita.ciqual.dto;
 
+
 public class FoodScientificNameDto {
     private long id;
 
@@ -11,6 +12,12 @@ public class FoodScientificNameDto {
     public FoodScientificNameDto(String name) {
         this.name = name;
     }
+
+    public FoodScientificNameDto(long id, String name) {
+        this(name);
+        this.id=id;
+    }
+
 
     public long getId() {
         return id;

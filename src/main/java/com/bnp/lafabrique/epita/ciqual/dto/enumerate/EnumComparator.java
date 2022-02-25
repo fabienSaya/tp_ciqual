@@ -1,5 +1,7 @@
 package com.bnp.lafabrique.epita.ciqual.dto.enumerate;
 
+import java.util.Arrays;
+
 public enum EnumComparator {
     BELOW("<"),
     ABOVE(">"),
@@ -18,6 +20,13 @@ public enum EnumComparator {
     @Override
     public String toString() {
         return label;
+    }
+
+    public static EnumComparator getEnumFromlabel(String label) {
+        for (EnumComparator enumComparator:EnumComparator.values()) {
+            if (enumComparator.getLabel().equalsIgnoreCase(label)) return enumComparator;
+        }
+        return null;
     }
 
 }

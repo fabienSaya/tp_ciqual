@@ -26,8 +26,12 @@ public class CiqualApplication {
 
 
 	public static void main(String[] args) {
-		initDB();
+		//we check if componentTypes already in BDD
 		CacheFoodComponentType.initCacheFromBdd();
+		if (CacheFoodComponentType.getAllComponentTypes().isEmpty()) {
+			initDB();
+			CacheFoodComponentType.initCacheFromBdd();
+		}
 
 		SpringApplication.run(CiqualApplication.class, args);
 

@@ -4,6 +4,9 @@ import com.bnp.lafabrique.epita.ciqual.domaine.Food;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import javax.persistence.Query;
+import java.util.List;
+
 
 public class FoodDaoImpl implements FoodDao {
 
@@ -24,15 +27,33 @@ public class FoodDaoImpl implements FoodDao {
     @Override
     public Food findFoodByCode(String foodCode) {
         SessionFactory sessionFactory=DaoFactory.getSessionFactory();
-
         Session session=sessionFactory.openSession();
-        session.beginTransaction();
-        Food food=session.bySimpleNaturalId(Food.class).load(foodCode);
 
-        session.getTransaction().commit();
-        session.close();
+        Food food;
+        try {
+            session.beginTransaction();
+            food = session.bySimpleNaturalId(Food.class).load(foodCode);
+            session.getTransaction().commit();
+            return food;
+        } finally {
+            session.close();
+        }
+    }
 
-        return food;
+    @Override
+    public List<Food> findFoodByName(String name) {
+        SessionFactory sessionFactory=DaoFactory.getSessionFactory();
+        Session session=sessionFactory.openSession();
 
+        List<Food> foodList;
+        try {
+            Query query = session.createQuery("select f from Food f where f.name like :name");
+            query.setParameter("name",name+"%");
+            foodList=query.getResultList();
+
+            return foodList;
+        } finally {
+            session.close();
+        }
     }
 }

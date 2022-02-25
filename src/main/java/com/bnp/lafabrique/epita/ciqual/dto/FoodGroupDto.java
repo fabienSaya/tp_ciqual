@@ -12,6 +12,12 @@ public class FoodGroupDto {
     public FoodGroupDto() {
     }
 
+    public FoodGroupDto(String code, String nameFR, long id) {
+        this(code, nameFR);
+        this.id=id;
+    }
+
+
     public FoodGroupDto(String code, String nameFR) {
         this.code = code;
         this.nameFR = nameFR;

@@ -8,7 +8,7 @@ public class FoodComponent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private FoodComponentType componentType;
 
     private Double quantity;

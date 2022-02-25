@@ -20,11 +20,11 @@
         <property name = "show_sql"> true </property>
 
         <!-- Permet à Hibernate de créer les tables depuis les entités -->
-        <!--<property name = "hbm2ddl.auto"> update </property>-->
+        <property name = "hbm2ddl.auto"> update </property>
 
         <!-- mode create recrée la base from scratch. Utile pour recommencer à 0 à chaque fois
         Passer en update si base stable-->
-        <property name = "hbm2ddl.auto"> create </property>
+        <!--<property name = "hbm2ddl.auto"> create </property>-->
 
         <!-- Charger les entités -->
         <mapping class = "com.bnp.lafabrique.epita.ciqual.domaine.FoodGroup" />

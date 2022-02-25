@@ -14,6 +14,11 @@ public class FoodSubSubGroupDto {
     public FoodSubSubGroupDto() {
     }
 
+    public FoodSubSubGroupDto(FoodSubGroupDto group, String code, String nameFR, long id) {
+        this(group,code,nameFR);
+        this.id=id;
+    }
+
     public FoodSubSubGroupDto(FoodSubGroupDto group, String code, String nameFR) {
         this.subGroup = group;
         this.code = code;

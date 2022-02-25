@@ -7,10 +7,12 @@ import com.bnp.lafabrique.epita.ciqual.dao.FoodDao;
 import com.bnp.lafabrique.epita.ciqual.dao.DaoFactory;
 import com.bnp.lafabrique.epita.ciqual.domaine.*;
 import com.bnp.lafabrique.epita.ciqual.dto.*;
+import com.bnp.lafabrique.epita.ciqual.dto.enumerate.EnumComparator;
 import com.bnp.lafabrique.epita.ciqual.exception.GroupDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,6 +59,27 @@ public class FoodServiceImpl implements FoodService {
         return food.getId();
     }
 
+    @Override
+    public FoodDto getFoodByCode(String code) throws GroupDefinitionException {
+        FoodDao foodDao= DaoFactory.getFoodDao();
+        Food food= foodDao.findFoodByCode(code);
+        return convertFoodToDto(food);
+    }
+
+    @Override
+    public List<FoodDto> getFoodByName(String name) throws GroupDefinitionException {
+        FoodDao foodDao= DaoFactory.getFoodDao();
+        List<Food> foodList= foodDao.findFoodByName(name);
+        if (foodList==null) return null;
+
+        ArrayList<FoodDto> resultList=new ArrayList<>();
+        //because of the possible exception, I can't use stream to proceed with conversion
+        for (Food food:foodList) {
+            resultList.add(convertFoodToDto(food));
+        }
+        return resultList;
+    }
+
     private Food convertFoodDtoToFood(FoodDto foodDto){
         FoodScientificName foodScientificName =new FoodScientificName(foodDto.getScientificName().getName());
 
@@ -74,19 +97,66 @@ public class FoodServiceImpl implements FoodService {
 
         List<FoodComponent> foodComponentList=null;
         if (foodDto.getComponentList()!=null)
-            foodComponentList= foodDto.getComponentList().stream().map(this::convertFoodComponentDtoToFoodComponent).collect(Collectors.toList());
+            foodComponentList= foodDto.getComponentList().stream().map(this::convertDtoToFoodComponent).collect(Collectors.toList());
 
         return new Food(foodDto.getCode(), foodDto.getName(), foodScientificName, foodSubSubGroup,foodComponentList);
 
     }
 
-    private FoodComponent convertFoodComponentDtoToFoodComponent(FoodComponentDto foodComponentDto){
+    private FoodScientificNameDto convertFoodScientificNameToDto(FoodScientificName foodScientificName){
+        if (foodScientificName==null) return null;
+        return new FoodScientificNameDto(foodScientificName.getId(),foodScientificName.getName());
+    }
+
+    private FoodSubSubGroupDto convertFoodSubSubGroupsToDto(FoodSubSubGroup foodSubSubGroup) throws GroupDefinitionException{
+        //we get all the group levels
+        if (foodSubSubGroup==null) return null;
+        FoodSubGroup foodSubGroup=foodSubSubGroup.getSubGroup();
+        if (foodSubGroup==null) throw new GroupDefinitionException("We can't have a subsubgroup (id="+foodSubSubGroup.getId()+") without a subgroup");
+        FoodGroup foodGroup = foodSubGroup.getGroup();
+        if (foodGroup==null) throw new GroupDefinitionException("We can't have a subgroup (id="+foodSubGroup.getId()+") without a group");
+
+        //now we start conversion starting from the higher level
+        FoodGroupDto foodGroupDto = new FoodGroupDto(foodGroup.getCode(), foodGroup.getNameFR(), foodGroup.getId());
+        FoodSubGroupDto foodSubGroupDto = new FoodSubGroupDto(foodGroupDto, foodSubGroup.getCode(), foodSubGroup.getNameFR(),foodSubGroup.getId());
+        FoodSubSubGroupDto foodSubSubGroupDto= new FoodSubSubGroupDto(foodSubGroupDto,foodSubSubGroup.getCode(), foodSubSubGroup.getNameFR());
+
+        return foodSubSubGroupDto;
+    }
+
+
+    private FoodDto convertFoodToDto(Food food) throws GroupDefinitionException{
+        FoodScientificNameDto foodScientificNameDto = convertFoodScientificNameToDto(food.getScientificName());
+
+        //creation of groups
+        FoodSubSubGroupDto foodSubSubGroupDto = convertFoodSubSubGroupsToDto(food.getSubSubGroup());
+
+        //creation of food components
+        List<FoodComponentDto> foodComponentDtoList=null;
+        if (food.getComponentList()!=null)
+            foodComponentDtoList= food.getComponentList().stream().map(this::convertFoodComponentToDto).collect(Collectors.toList());
+
+        return new FoodDto(food.getCode(), food.getName(), foodScientificNameDto, foodSubSubGroupDto,foodComponentDtoList);
+    }
+
+
+    private FoodComponent convertDtoToFoodComponent(FoodComponentDto foodComponentDto){
         FoodComponentType foodComponentType= CacheFoodComponentType.get(foodComponentDto.getComponentType().getName());
 
         String comparator = null;
         if(foodComponentDto.getComparator()!=null) comparator=foodComponentDto.getComparator().getLabel();
 
         return new FoodComponent(foodComponentType,foodComponentDto.getQuantity(),comparator);
+    }
+
+
+    private FoodComponentDto convertFoodComponentToDto(FoodComponent foodComponent){
+        FoodComponentType foodComponentType= foodComponent.getComponentType();
+        FoodComponentTypeDto foodComponentTypeDto=new FoodComponentTypeDto(foodComponentType.getName(), foodComponentType.getLabel(),foodComponentType.getExcelColumn(),foodComponentType.getId());
+
+        EnumComparator comparator=EnumComparator.getEnumFromlabel(foodComponent.getComparator());
+
+        return new FoodComponentDto(foodComponentTypeDto, foodComponent.getQuantity(), comparator,foodComponent.getId());
     }
 
 }
