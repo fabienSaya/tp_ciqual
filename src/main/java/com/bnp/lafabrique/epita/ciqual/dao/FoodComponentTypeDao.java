@@ -5,12 +5,16 @@ import com.bnp.lafabrique.epita.ciqual.domaine.FoodComponentType;
 import java.util.List;
 
 public interface FoodComponentTypeDao {
-
-    long create(FoodComponentType componentType);
+    /**
+     *
+     * @param componentType the object to create
+     * @return the object with is DB id
+     */
+    FoodComponentType create(FoodComponentType componentType);
 
     List <FoodComponentType> getAllComponentTypes();
 
-    List<FoodComponentType> findComponentTypeByName(String name);
+    FoodComponentType findComponentTypeByName(String name);
 
 
 }

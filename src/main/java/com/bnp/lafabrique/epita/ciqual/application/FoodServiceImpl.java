@@ -1,5 +1,6 @@
 package com.bnp.lafabrique.epita.ciqual.application;
 
+import com.bnp.lafabrique.epita.ciqual.cache.CacheFoodComponentType;
 import com.bnp.lafabrique.epita.ciqual.cache.CacheFoodGroups;
 import com.bnp.lafabrique.epita.ciqual.cache.CacheScientificNames;
 import com.bnp.lafabrique.epita.ciqual.dao.FoodDao;
@@ -7,6 +8,7 @@ import com.bnp.lafabrique.epita.ciqual.dao.DaoFactory;
 import com.bnp.lafabrique.epita.ciqual.domaine.*;
 import com.bnp.lafabrique.epita.ciqual.dto.*;
 import com.bnp.lafabrique.epita.ciqual.exception.GroupDefinitionException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +17,12 @@ import java.util.stream.Collectors;
 @Service
 public class FoodServiceImpl implements FoodService {
 
+    @Autowired
+    FoodComponentTypeService foodComponentTypeService;
 
     @Override
     public Long create(FoodDto foodDto)  {
-        FoodDao foodDao= DaoFactory.getProduitDao();
+        FoodDao foodDao= DaoFactory.getFoodDao();
         Food food= convertFoodDtoToFood(foodDto);
 
         if (foodDao.findFoodByCode(food.getCode())!=null)
@@ -26,7 +30,7 @@ public class FoodServiceImpl implements FoodService {
             return Long.valueOf(0);
 
         //we check if the food belong to already existing groups and update its ids according to what exist
-        boolean wasSubSubGrpInCache= CacheFoodGroups.updateGroupsIds(food.getSubSubGroup());
+        boolean isSubSubGrpAlreadyInCache= CacheFoodGroups.updateGroupsIds(food.getSubSubGroup());
         //if we find the subsubgroup it means ones already exist in DB so we reuse its ids
         //if (foodSubSubGroup!=null) food.setSubSubGroup(foodSubSubGroup);
 
@@ -35,13 +39,11 @@ public class FoodServiceImpl implements FoodService {
         if(foodScientificName!=null)
             food.setScientificName(foodScientificName);
 
-
-
         //create the food in DB
         food = foodDao.create(food);
 
         //if we didn't find the subsubgroup in the cache before adding it to the DB, then we add it with its ids after creation in DB
-        if (!wasSubSubGrpInCache) {
+        if (!isSubSubGrpAlreadyInCache) {
             //Code à revoir, pas top cette gestion d'exception. Ca devrait pas arriver en plus à cet endroit.
             try {
                 CacheFoodGroups.add(food.getSubSubGroup());
@@ -79,22 +81,12 @@ public class FoodServiceImpl implements FoodService {
     }
 
     private FoodComponent convertFoodComponentDtoToFoodComponent(FoodComponentDto foodComponentDto){
+        FoodComponentType foodComponentType= CacheFoodComponentType.get(foodComponentDto.getComponentType().getName());
 
+        String comparator = null;
+        if(foodComponentDto.getComparator()!=null) comparator=foodComponentDto.getComparator().getLabel();
 
-
-        //return new FoodComponent(foodComponentDto.getName(),unit,foodComponentDto.getQuantity(),foodComponentDto.getComparator().getLabel());
-
-//note pour moi: les componant type sont une table de référence. Je devrais les charger au début de l'application.
-        //return new FoodComponent(new ComponentType() foodComponentDto.getName(),foodComponentDto.getQuantity(),foodComponentDto.getComparator().getLabel());
-        return null;
+        return new FoodComponent(foodComponentType,foodComponentDto.getQuantity(),comparator);
     }
-
-
-
-
-
-
-
-
 
 }

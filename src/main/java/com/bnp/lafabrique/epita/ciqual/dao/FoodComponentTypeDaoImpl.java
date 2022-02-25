@@ -10,29 +10,21 @@ import java.util.List;
 public class FoodComponentTypeDaoImpl implements FoodComponentTypeDao {
 
     @Override
-    public long create(FoodComponentType componentType) {
-        //first we check component does not exist
-        List <FoodComponentType> list= findComponentTypeByName(componentType.getName());
-        if(!list.isEmpty()) {
-            return list.get(0).getId();
-        } else {
-            SessionFactory sessionFactory = DaoFactory.getSessionFactory();
-            Session session = sessionFactory.openSession();
-            try {
-                session.beginTransaction();
-                session.saveOrUpdate(componentType);
-                session.getTransaction().commit();
-            } finally {
-                session.close();
-            }
-
-
-            return componentType.getId();
+    public FoodComponentType create(FoodComponentType componentType) {
+        SessionFactory sessionFactory = DaoFactory.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        try {
+            session.beginTransaction();
+            session.saveOrUpdate(componentType);
+            session.getTransaction().commit();
+            return componentType;
+        } finally {
+            session.close();
         }
     }
 
     @Override
-    public List <FoodComponentType> getAllComponentTypes() {
+    public List<FoodComponentType> getAllComponentTypes() {
         SessionFactory sessionFactory = DaoFactory.getSessionFactory();
         Session session = sessionFactory.openSession();
         try {
@@ -44,17 +36,18 @@ public class FoodComponentTypeDaoImpl implements FoodComponentTypeDao {
     }
 
     @Override
-    public List<FoodComponentType> findComponentTypeByName(String name) {
+    public FoodComponentType findComponentTypeByName(String name) {
         SessionFactory sessionFactory = DaoFactory.getSessionFactory();
         Session session = sessionFactory.openSession();
-        List<FoodComponentType> list;
+
+        FoodComponentType foodComponentType;
         try {
-            Query query = session.createQuery("select c from FoodComponentType c where c.name like :name");
-            query.setParameter("name",name+"%");
-            list=query.getResultList();
+            session.beginTransaction();
+            foodComponentType = session.bySimpleNaturalId(FoodComponentType.class).load(name);
+            session.getTransaction().commit();
+            return foodComponentType;
         } finally {
             session.close();
         }
-        return list;
     }
 }

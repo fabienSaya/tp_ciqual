@@ -11,7 +11,7 @@ public class FoodComponent {
     @ManyToOne
     private FoodComponentType componentType;
 
-    private long quantity;
+    private Double quantity;
 
     /* comparator on the quantity:
         - null if no comparator
@@ -23,7 +23,7 @@ public class FoodComponent {
     public FoodComponent() {
     }
 
-    public FoodComponent(FoodComponentType componentType, long quantity, String comparator) {
+    public FoodComponent(FoodComponentType componentType, Double quantity, String comparator) {
         this.componentType = componentType;
         this.quantity = quantity;
         this.comparator = comparator;
@@ -37,12 +37,15 @@ public class FoodComponent {
         this.id = id;
     }
 
-
-    public long getQuantity() {
+    /**
+     *
+     * @return quantity that can be null if we didn't get the info
+     */
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(long quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 

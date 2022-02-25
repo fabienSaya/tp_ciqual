@@ -6,11 +6,9 @@ public class FoodComponentDto {
 
     private long id;
 
-
-
     private FoodComponentTypeDto componentType;
 
-    private long quantity;
+    private Double quantity;
 
     /* comparator on the quantity:
         - null if no comparator
@@ -22,7 +20,7 @@ public class FoodComponentDto {
     public FoodComponentDto() {
     }
 
-    public FoodComponentDto(FoodComponentTypeDto componentType, long quantity, EnumComparator comparator) {
+    public FoodComponentDto(FoodComponentTypeDto componentType, Double quantity, EnumComparator comparator) {
         this.componentType = componentType;
         this.quantity = quantity;
         this.comparator = comparator;
@@ -37,11 +35,11 @@ public class FoodComponentDto {
     }
 
 
-    public long getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(long quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 

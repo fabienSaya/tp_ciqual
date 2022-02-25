@@ -1,9 +1,8 @@
 package com.bnp.lafabrique.epita.ciqual.domaine;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.hibernate.annotations.NaturalId;
+
+import javax.persistence.*;
 
 @Entity
 public class FoodComponentType {
@@ -11,15 +10,21 @@ public class FoodComponentType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NaturalId
+    @Column(nullable = false,unique = true)
     private String name;
     private String label;
+
+    @Column(unique=true)
+    private int excelColumn;
 
     public FoodComponentType() {
     }
 
-    public FoodComponentType(String name, String label) {
+    public FoodComponentType(String name, String label, int excelColumn) {
         this.name = name;
         this.label = label;
+        this.excelColumn = excelColumn;
     }
 
     public long getId() {
@@ -44,5 +49,13 @@ public class FoodComponentType {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public int getExcelColumn() {
+        return excelColumn;
+    }
+
+    public void setExcelColumn(int excelColumn) {
+        this.excelColumn = excelColumn;
     }
 }

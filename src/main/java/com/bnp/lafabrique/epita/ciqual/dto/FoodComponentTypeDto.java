@@ -6,9 +6,12 @@ public class FoodComponentTypeDto {
     private String name;
     private String label;
 
-    public FoodComponentTypeDto(String name, String label) {
+    private int excelColumn;
+
+    public FoodComponentTypeDto(String name, String label, int excelColumn) {
         this.name = name;
         this.label = label;
+        this.excelColumn= excelColumn;
     }
 
     public FoodComponentTypeDto() {
@@ -36,5 +39,13 @@ public class FoodComponentTypeDto {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public int getExcelColumn() {
+        return excelColumn;
+    }
+
+    public void setExcelColumn(int excelColumn) {
+        this.excelColumn = excelColumn;
     }
 }

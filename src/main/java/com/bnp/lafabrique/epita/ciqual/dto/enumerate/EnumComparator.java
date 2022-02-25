@@ -2,7 +2,8 @@ package com.bnp.lafabrique.epita.ciqual.dto.enumerate;
 
 public enum EnumComparator {
     BELOW("<"),
-    ABOVE(">");
+    ABOVE(">"),
+    TRACE("traces");
 
     private String label;
 

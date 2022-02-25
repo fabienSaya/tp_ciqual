@@ -10,15 +10,15 @@ public class FoodDaoImpl implements FoodDao {
     @Override
     public Food create(Food food) {
         SessionFactory sessionFactory=DaoFactory.getSessionFactory();
-
         Session session=sessionFactory.openSession();
-        session.beginTransaction();
-        session.saveOrUpdate(food);
-
-        session.getTransaction().commit();
-        session.close();
-
-        return food;
+        try {
+            session.beginTransaction();
+            session.saveOrUpdate(food);
+            session.getTransaction().commit();
+            return food;
+        } finally {
+            session.close();
+        }
     }
 
     @Override
