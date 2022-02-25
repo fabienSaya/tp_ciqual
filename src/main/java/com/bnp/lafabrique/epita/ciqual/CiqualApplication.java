@@ -21,6 +21,11 @@ public class CiqualApplication {
 		componentTypeService.create(alimentComponentTypeDto);
 		alimentComponentTypeDto = new FoodComponentTypeDto("sucres", "Sucres (g/100 g)",18);
 		componentTypeService.create(alimentComponentTypeDto);
+		alimentComponentTypeDto = new FoodComponentTypeDto("Fructose", "Fructose (g/100 g)",19);
+		componentTypeService.create(alimentComponentTypeDto);
+		alimentComponentTypeDto = new FoodComponentTypeDto("Galactose", "Galactose (g/100 g)",20);
+		componentTypeService.create(alimentComponentTypeDto);
+
 
 	}
 

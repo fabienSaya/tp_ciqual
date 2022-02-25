@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,10 +50,17 @@ public class CsvFileController {
     @PostMapping(value = "/loadfile/insertintodb")
     public int loadFileAndInsertIntoDatabase(@RequestBody CsvFileDefinitionDto csvFileDefinitionDto) {
         try {
+
+            Instant start = Instant.now();
             String path=csvFileDefinitionDto.getPath();
             System.out.println("Path of file to load: " + path);
             int nbElementCreated = csvFileCiqualService.loadFileAndInsertIntoDatabase(path);
             System.out.println("nb line loaded:"+nbElementCreated);
+            Instant finish = Instant.now();
+            long timeElapsed = Duration.between(start, finish).toMillis();
+
+            System.out.println("Database creation with file load took: "+timeElapsed+" ms");
+
             return nbElementCreated;
         } catch (IOException e) {
             e.printStackTrace();
