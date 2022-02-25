@@ -1,6 +1,10 @@
 package com.bnp.lafabrique.epita.ciqual.application;
 
+import com.bnp.lafabrique.epita.ciqual.cache.CacheFoodComponentType;
+import com.bnp.lafabrique.epita.ciqual.domaine.FoodComponent;
+import com.bnp.lafabrique.epita.ciqual.domaine.FoodComponentType;
 import com.bnp.lafabrique.epita.ciqual.dto.*;
+import com.bnp.lafabrique.epita.ciqual.dto.enumerate.EnumComparator;
 import com.bnp.lafabrique.epita.ciqual.exception.GroupDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,16 +12,20 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class CsvFileCiqualServiceImpl implements CsvFileCiqualService {
-    private String FIRST_HEADER_FIELD = "alim_grp_code";
+    private static String FIRST_HEADER_FIELD = "alim_grp_code";
 
     @Autowired
     private FoodService foodService;
+
+    @Autowired
+    private FoodComponentTypeService foodComponentTypeService;
 
     @Override
     public List<FoodDto> loadFile(String path) throws IOException {
@@ -43,7 +51,8 @@ public class CsvFileCiqualServiceImpl implements CsvFileCiqualService {
     }
 
     private FoodDto convertCsvLineToAlimentDto(String csvLine) {
-        List<String> fields = Arrays.asList(csvLine.trim().split(";"));
+        //we put -1 in the split so even empty fields at the end generates a field in the list
+        List<String> fields = Arrays.asList(csvLine.trim().split(";",-1));
 
         //I do nothing if the line is the header
         if (fields.get(0).equalsIgnoreCase(FIRST_HEADER_FIELD)) return null;
@@ -58,7 +67,68 @@ public class CsvFileCiqualServiceImpl implements CsvFileCiqualService {
         //build the aliment scientific name
         FoodScientificNameDto alimentScientificNameDto = new FoodScientificNameDto(fields.get(8));
 
-        return new FoodDto(fields.get(6), fields.get(7), alimentScientificNameDto, subSubGroupDto, null);
+        //build the component list
+        List<FoodComponentDto> foodComponentDtoList=new ArrayList<>();
+
+        //for each component type we want to get the data (the ones that where defined in the DB)
+        for (FoodComponentType foodComponentType: CacheFoodComponentType.getAllComponentTypes()) {
+            //we get it's raw value
+            String columnValue= null;
+            try {
+                columnValue = fields.get(foodComponentType.getExcelColumn());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            //we now check if there is a quantity and eventually a comparator
+            Double quantity=null;
+            EnumComparator enumComparatorFound=null;
+
+            //if the value is not - or empty then we parse value and comparator
+            if (!columnValue.trim().equalsIgnoreCase("-")&&!columnValue.isEmpty()) {
+                //we check if one of the comparator is in the value, if yes, we
+
+                for (EnumComparator enumComparator : EnumComparator.values()) {
+                    if(columnValue.contains(enumComparator.getLabel())) {
+                        enumComparatorFound=enumComparator;
+                        break;
+                    }
+                }
+
+                //if we found a comparator, we remove it from the value and then we parse the quantity, else we just parse the quantity
+                if (enumComparatorFound!=null) {
+                    //if the value indicates only traces, we don't parse the quantity
+                    if (enumComparatorFound!=EnumComparator.TRACE) {
+                        //it is not traces so we parse the quantity
+                        columnValue = columnValue.replaceFirst(enumComparatorFound.getLabel(), "");
+
+                        try {
+                            quantity = Double.valueOf(columnValue.trim().replace(",", "."));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            throw e;
+                        }
+                    }
+                } else {
+                    //it is a simple value to parse
+                    try {
+                        quantity = Double.valueOf(columnValue.trim().replace(",", "."));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw e;
+                    }
+                }
+
+            }
+
+
+            FoodComponentTypeDto foodComponentTypeDto =  foodComponentTypeService.convertComponentTypeToComponentTypeDto(foodComponentType);
+
+            foodComponentDtoList.add(new FoodComponentDto(foodComponentTypeDto,quantity,enumComparatorFound));
+
+        }
+
+        return new FoodDto(fields.get(6), fields.get(7), alimentScientificNameDto, subSubGroupDto, foodComponentDtoList);
 
     }
 
