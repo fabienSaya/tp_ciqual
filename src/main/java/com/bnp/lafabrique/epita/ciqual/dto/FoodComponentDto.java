@@ -21,15 +21,19 @@ public class FoodComponentDto {
     public FoodComponentDto() {
     }
 
-    public FoodComponentDto(FoodComponentTypeDto componentType, Double quantity, EnumComparator comparator) {
-        this.componentType = componentType;
-        this.quantity = quantity;
-        this.comparator = comparator;
-    }
 
-    public FoodComponentDto(FoodComponentTypeDto componentType, Double quantity, EnumComparator comparator,long id) {
-        this(componentType,quantity,comparator);
+    /**
+     *
+     * @param id put 0 if it is a new element to create in BDD
+     * @param componentType
+     * @param quantity
+     * @param comparator
+     */
+    public FoodComponentDto(long id, FoodComponentTypeDto componentType, Double quantity, EnumComparator comparator) {
         this.id=id;
+        this.componentType=componentType;
+        this.quantity=quantity;
+        this.comparator=comparator;
     }
 
     public long getId() {

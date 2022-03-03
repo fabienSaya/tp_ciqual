@@ -16,13 +16,13 @@ public class Food {
     private String code;
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private FoodScientificName alimentScientificName;
 
-    @ManyToOne (cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne (cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private FoodSubSubGroup alimentSubSubGroup;
 
-    @OneToMany (cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany (cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<FoodComponent> componentList;
 
     public Food() {

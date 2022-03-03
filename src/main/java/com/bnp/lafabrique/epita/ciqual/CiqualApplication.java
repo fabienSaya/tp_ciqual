@@ -38,6 +38,8 @@ public class CiqualApplication {
 			CacheFoodComponentType.initCacheFromBdd();
 		}
 
+
+
 		SpringApplication.run(CiqualApplication.class, args);
 
 	}

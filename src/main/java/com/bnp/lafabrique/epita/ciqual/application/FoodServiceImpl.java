@@ -2,6 +2,7 @@ package com.bnp.lafabrique.epita.ciqual.application;
 
 import com.bnp.lafabrique.epita.ciqual.cache.CacheFoodComponentType;
 import com.bnp.lafabrique.epita.ciqual.cache.CacheFoodGroups;
+import com.bnp.lafabrique.epita.ciqual.cache.CacheFoodLightInfoDto;
 import com.bnp.lafabrique.epita.ciqual.cache.CacheScientificNames;
 import com.bnp.lafabrique.epita.ciqual.dao.FoodDao;
 import com.bnp.lafabrique.epita.ciqual.dao.DaoFactory;
@@ -27,9 +28,10 @@ public class FoodServiceImpl implements FoodService {
         FoodDao foodDao= DaoFactory.getFoodDao();
         Food food= convertFoodDtoToFood(foodDto);
 
-        if (foodDao.findFoodByCode(food.getCode())!=null)
+        Long id= foodDao.foodExist(food.getCode());
+        if (id!=0)
             //the food already exist in BDD
-            return Long.valueOf(0);
+            return id;
 
         //we check if the food belong to already existing groups and update its ids according to what exist
         boolean isSubSubGrpAlreadyInCache= CacheFoodGroups.updateGroupsIds(food.getSubSubGroup());
@@ -80,6 +82,35 @@ public class FoodServiceImpl implements FoodService {
         return resultList;
     }
 
+    @Override
+    public List<FoodLightInfoDto> getAllFoodLightInfo(boolean forceReloadFromDB) {
+
+        if (CacheFoodLightInfoDto.isEmpty() || forceReloadFromDB) {
+            //I get data from DB if cache is empty or if it is asked to reload from DB
+            FoodDao foodDao = DaoFactory.getFoodDao();
+            List<Food> foodList = foodDao.getAllFood();
+
+            if (foodList == null) return null;
+
+            ArrayList<FoodLightInfoDto> resultList = new ArrayList<>();
+            //because of the possible exception, I can't use stream to proceed with conversion
+            for (Food food : foodList) {
+                FoodLightInfoDto foodLightInfoDto = convertFoodToFoodLightInfoDto(food);
+                resultList.add(foodLightInfoDto);
+                CacheFoodLightInfoDto.add(foodLightInfoDto);
+            }
+            return resultList;
+        } else {
+            //we return values that are in the cache
+            return CacheFoodLightInfoDto.getAllValues();
+        }
+
+    }
+
+    private FoodLightInfoDto convertFoodToFoodLightInfoDto(Food food) {
+        return new FoodLightInfoDto(food.getId(), food.getCode(), food.getName());
+    }
+
     private Food convertFoodDtoToFood(FoodDto foodDto){
         FoodScientificName foodScientificName =new FoodScientificName(foodDto.getScientificName().getName());
 
@@ -127,16 +158,23 @@ public class FoodServiceImpl implements FoodService {
 
     private FoodDto convertFoodToDto(Food food) throws GroupDefinitionException{
         FoodScientificNameDto foodScientificNameDto = convertFoodScientificNameToDto(food.getScientificName());
-
+        System.out.println("convert food "+food.getId()+" to FoodDto");
         //creation of groups
         FoodSubSubGroupDto foodSubSubGroupDto = convertFoodSubSubGroupsToDto(food.getSubSubGroup());
 
         //creation of food components
         List<FoodComponentDto> foodComponentDtoList=null;
-        if (food.getComponentList()!=null)
-            foodComponentDtoList= food.getComponentList().stream().map(this::convertFoodComponentToDto).collect(Collectors.toList());
+        if (food.getComponentList()!=null) {
+            //foodComponentDtoList = food.getComponentList().stream().map(this::convertFoodComponentToDto).collect(Collectors.toList());
+            foodComponentDtoList=new ArrayList<>();
+            for (FoodComponent foodComponent: food.getComponentList()) {
+                FoodComponentDto foodComponentDto=convertFoodComponentToDto(foodComponent);
+                foodComponentDtoList.add(foodComponentDto);
+            }
 
-        return new FoodDto(food.getCode(), food.getName(), foodScientificNameDto, foodSubSubGroupDto,foodComponentDtoList);
+        }
+
+        return new FoodDto(food.getId(),food.getCode(), food.getName(), foodScientificNameDto, foodSubSubGroupDto,foodComponentDtoList);
     }
 
 
@@ -151,12 +189,15 @@ public class FoodServiceImpl implements FoodService {
 
 
     private FoodComponentDto convertFoodComponentToDto(FoodComponent foodComponent){
+        System.out.println("start convertFoodComponentToDto for foodComponent id: "+foodComponent.getId());
         FoodComponentType foodComponentType= foodComponent.getComponentType();
         FoodComponentTypeDto foodComponentTypeDto=new FoodComponentTypeDto(foodComponentType.getName(), foodComponentType.getLabel(),foodComponentType.getExcelColumn(),foodComponentType.getId());
 
         EnumComparator comparator=EnumComparator.getEnumFromlabel(foodComponent.getComparator());
 
-        return new FoodComponentDto(foodComponentTypeDto, foodComponent.getQuantity(), comparator,foodComponent.getId());
+        return new FoodComponentDto(foodComponent.getId(),foodComponentTypeDto, foodComponent.getQuantity(), comparator);
     }
+
+
 
 }

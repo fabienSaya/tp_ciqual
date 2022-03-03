@@ -23,6 +23,7 @@ public enum EnumComparator {
     }
 
     public static EnumComparator getEnumFromlabel(String label) {
+        if (label==null) return null;
         for (EnumComparator enumComparator:EnumComparator.values()) {
             if (enumComparator.getLabel().equalsIgnoreCase(label)) return enumComparator;
         }

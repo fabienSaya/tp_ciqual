@@ -2,11 +2,7 @@ package com.bnp.lafabrique.epita.ciqual.dto;
 
 import java.util.List;
 
-public class FoodDto {
-    private long id;
-
-    private String code;
-    private String name;
+public class FoodDto extends FoodLightInfoDto{
 
     private FoodScientificNameDto scientificName;
 
@@ -17,37 +13,13 @@ public class FoodDto {
     public FoodDto() {
     }
 
-    public FoodDto(String code, String name, FoodScientificNameDto scientificName, FoodSubSubGroupDto subSubGroup, List<FoodComponentDto> componentList) {
-        this.code = code;
-        this.name = name;
+    public FoodDto(long id, String code, String name, FoodScientificNameDto scientificName, FoodSubSubGroupDto subSubGroup, List<FoodComponentDto> componentList) {
+        super(id,code,name);
         this.scientificName = scientificName;
         this.subSubGroup = subSubGroup;
         this.componentList = componentList;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public FoodScientificNameDto getScientificName() {
         return scientificName;

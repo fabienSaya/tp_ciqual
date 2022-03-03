@@ -121,14 +121,13 @@ public class CsvFileCiqualServiceImpl implements CsvFileCiqualService {
 
             }
 
-
             FoodComponentTypeDto foodComponentTypeDto =  foodComponentTypeService.convertComponentTypeToComponentTypeDto(foodComponentType);
 
-            foodComponentDtoList.add(new FoodComponentDto(foodComponentTypeDto,quantity,enumComparatorFound));
+            foodComponentDtoList.add(new FoodComponentDto(0,foodComponentTypeDto,quantity,enumComparatorFound));
 
         }
 
-        return new FoodDto(fields.get(6), fields.get(7), alimentScientificNameDto, subSubGroupDto, foodComponentDtoList);
+        return new FoodDto(0,fields.get(6), fields.get(7), alimentScientificNameDto, subSubGroupDto, foodComponentDtoList);
 
     }
 

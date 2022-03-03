@@ -1,6 +1,7 @@
 package com.bnp.lafabrique.epita.ciqual.application;
 
 import com.bnp.lafabrique.epita.ciqual.dto.FoodDto;
+import com.bnp.lafabrique.epita.ciqual.dto.FoodLightInfoDto;
 import com.bnp.lafabrique.epita.ciqual.exception.GroupDefinitionException;
 
 import java.util.List;
@@ -19,5 +20,7 @@ public interface FoodService {
     FoodDto getFoodByCode(String code) throws GroupDefinitionException;
 
     List<FoodDto> getFoodByName(String name) throws GroupDefinitionException;
+
+    List<FoodLightInfoDto> getAllFoodLightInfo(boolean forceReloadFromDB);
 
 }
