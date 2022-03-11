@@ -27,6 +27,7 @@ public class CiqualApplication {
 		componentTypeService.create(alimentComponentTypeDto);
 
 
+
 	}
 
 

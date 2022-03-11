@@ -1,7 +1,6 @@
 package com.bnp.lafabrique.epita.ciqual.exposition;
 
 import com.bnp.lafabrique.epita.ciqual.application.FoodService;
-import com.bnp.lafabrique.epita.ciqual.dto.CsvFileDefinitionDto;
 import com.bnp.lafabrique.epita.ciqual.dto.FoodDto;
 import com.bnp.lafabrique.epita.ciqual.dto.FoodLightInfoDto;
 import com.bnp.lafabrique.epita.ciqual.exception.GroupDefinitionException;

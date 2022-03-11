@@ -2,10 +2,11 @@ package com.bnp.lafabrique.epita.ciqual.application;
 
 import com.bnp.lafabrique.epita.ciqual.dto.FoodDto;
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.Assertions.*;
 
 import java.io.IOException;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class AlimentServiceImplTests {

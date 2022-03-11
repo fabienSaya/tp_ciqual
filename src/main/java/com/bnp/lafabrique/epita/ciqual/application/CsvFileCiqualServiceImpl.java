@@ -1,11 +1,9 @@
 package com.bnp.lafabrique.epita.ciqual.application;
 
 import com.bnp.lafabrique.epita.ciqual.cache.CacheFoodComponentType;
-import com.bnp.lafabrique.epita.ciqual.domaine.FoodComponent;
 import com.bnp.lafabrique.epita.ciqual.domaine.FoodComponentType;
 import com.bnp.lafabrique.epita.ciqual.dto.*;
 import com.bnp.lafabrique.epita.ciqual.dto.enumerate.EnumComparator;
-import com.bnp.lafabrique.epita.ciqual.exception.GroupDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +14,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CsvFileCiqualServiceImpl implements CsvFileCiqualService {
-    private static String FIRST_HEADER_FIELD = "alim_grp_code";
+    private  static final String FIRST_HEADER_FIELD = "alim_grp_code";
 
     @Autowired
     private FoodService foodService;
@@ -29,10 +28,18 @@ public class CsvFileCiqualServiceImpl implements CsvFileCiqualService {
 
     @Override
     public List<FoodDto> loadFile(String path) throws IOException {
-        return Files.lines(Paths.get(path))
-                .skip(1)
-                .map(this::convertCsvLineToAlimentDto)
-                .collect(Collectors.toList());
+
+        Stream<String> fileLines=null;
+        try {
+            fileLines = Files.lines(Paths.get(path));
+            return fileLines
+                    .skip(1)
+                    .map(this::convertCsvLineToFoodDto)
+                    .collect(Collectors.toList());
+        } finally {
+            if (fileLines!=null) fileLines.close();
+        }
+
     }
 
     @Override
@@ -50,7 +57,7 @@ public class CsvFileCiqualServiceImpl implements CsvFileCiqualService {
         return foodDtoList.size();
     }
 
-    private FoodDto convertCsvLineToAlimentDto(String csvLine) {
+    private FoodDto convertCsvLineToFoodDto(String csvLine) {
         //we put -1 in the split so even empty fields at the end generates a field in the list
         List<String> fields = Arrays.asList(csvLine.trim().split(";",-1));
 
@@ -85,7 +92,7 @@ public class CsvFileCiqualServiceImpl implements CsvFileCiqualService {
             EnumComparator enumComparatorFound=null;
 
             //if the value is not - or empty then we parse value and comparator
-            if (!columnValue.trim().equalsIgnoreCase("-")&&!columnValue.isEmpty()) {
+            if (columnValue!=null &&!columnValue.trim().equalsIgnoreCase("-")&&!columnValue.isEmpty()) {
                 //we check if one of the comparator is in the value, if yes, we
 
                 for (EnumComparator enumComparator : EnumComparator.values()) {

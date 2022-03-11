@@ -1,7 +1,5 @@
 package com.bnp.lafabrique.epita.ciqual.dto.enumerate;
 
-import java.util.Arrays;
-
 public enum EnumComparator {
     BELOW("<"),
     ABOVE(">"),

@@ -1,7 +1,5 @@
 package com.bnp.lafabrique.epita.ciqual.domaine;
 
-import org.hibernate.annotations.NaturalId;
-
 import javax.persistence.*;
 
 

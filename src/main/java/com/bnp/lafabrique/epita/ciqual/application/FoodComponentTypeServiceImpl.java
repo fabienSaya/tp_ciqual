@@ -1,8 +1,8 @@
 package com.bnp.lafabrique.epita.ciqual.application;
 
 import com.bnp.lafabrique.epita.ciqual.cache.CacheFoodComponentType;
-import com.bnp.lafabrique.epita.ciqual.dao.FoodComponentTypeDao;
 import com.bnp.lafabrique.epita.ciqual.dao.DaoFactory;
+import com.bnp.lafabrique.epita.ciqual.dao.FoodComponentTypeDao;
 import com.bnp.lafabrique.epita.ciqual.domaine.FoodComponentType;
 import com.bnp.lafabrique.epita.ciqual.dto.FoodComponentTypeDto;
 import org.springframework.stereotype.Service;
